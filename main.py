@@ -106,9 +106,8 @@ def get_classifiers():
         ),
         "MLP(50)": MLPClassifier(
             hidden_layer_sizes=(50,), 
-            max_iter=1000, 
+            max_iter=300, 
             random_state=RANDOM_SEED,
-            early_stopping=True,
         ),
     }
     return clf_specs
