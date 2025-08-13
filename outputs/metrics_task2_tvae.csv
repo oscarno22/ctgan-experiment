@@ -1,0 +1,5 @@
+source,classifier,test_accuracy,test_f1
+TVAE_synth_train,AdaBoost(n=50),0.8390828129798341,0.6476916181084715
+TVAE_synth_train,DecisionTree(max_depth=20),0.7897430647968062,0.5633503401360545
+TVAE_synth_train,LogisticRegression,0.8340669464633023,0.6599538493811622
+TVAE_synth_train,MLP(50),0.8237281195618794,0.6104072398190046

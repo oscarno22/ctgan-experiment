@@ -1,0 +1,5 @@
+source,classifier,test_accuracy,test_f1
+CTGAN_synth_train,AdaBoost(n=50),0.8277203398505476,0.5279102384291725
+CTGAN_synth_train,DecisionTree(max_depth=20),0.8127751049237384,0.554011216776396
+CTGAN_synth_train,LogisticRegression,0.8391851776026206,0.6047798742138365
+CTGAN_synth_train,MLP(50),0.8243423072985976,0.5617977528089888
