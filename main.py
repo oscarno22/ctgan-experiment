@@ -1,3 +1,8 @@
+"""
+Oscar Nolen
+onolen@charlotte.edu
+"""
+
 import numpy as np
 import pandas as pd
 from pathlib import Path
@@ -92,11 +97,7 @@ def get_classifiers():
         "LogisticRegression": LogisticRegression(
             max_iter=2000, random_state=RANDOM_SEED
         ),
-        "MLP(50)": MLPClassifier(
-            hidden_layer_sizes=(50,), 
-            max_iter=300, 
-            random_state=RANDOM_SEED,
-        ),
+        "MLP(50)": MLPClassifier(hidden_layer_sizes=(50,), max_iter=300, random_state=RANDOM_SEED),
     }
     return clf_specs
 
@@ -118,7 +119,7 @@ def build_preprocessor(df):
             ),
         ]
     )
-    return preprocessor, num_cols, cat_cols
+    return preprocessor
 
 
 def evaluate(train_df, test_df, source_name, out_csv):
@@ -129,7 +130,7 @@ def evaluate(train_df, test_df, source_name, out_csv):
     X_test = test_df.drop(columns=[y_col])
     y_test = test_df[y_col].values
 
-    preprocessor, num_cols, cat_cols = build_preprocessor(train_df)
+    preprocessor = build_preprocessor(train_df)
     classifiers = get_classifiers()
 
     results = []
@@ -161,7 +162,7 @@ def dcr(real_train_df, synthetic_df):
     Compute min l2 distance from each synthetic sample to any real record
     """
     y_col = "income"
-    preprocessor, num_cols, cat_cols = build_preprocessor(real_train_df)
+    preprocessor = build_preprocessor(real_train_df)
 
     # prepare feature matrices (no target)
     X_real = real_train_df.drop(columns=[y_col])
@@ -213,11 +214,6 @@ def main():
     for model_name, model in [("CTGAN", ctgan), ("TVAE", tvae)]:
         for scale in [1, 2, 4]:
             synthetic_data = generate_synths(model, n_train * scale)
-            # quick fix if target column missing (shouldn't happen with ctgan)
-            if "income" not in synthetic_data.columns:
-                synthetic_data["income"] = np.random.choice(
-                    train_df["income"], size=len(synthetic_data), replace=True
-                )
 
             dcr_value = dcr(train_df, synthetic_data)
             dcr_results.append(
