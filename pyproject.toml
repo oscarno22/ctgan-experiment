@@ -1,7 +1,7 @@
 [project]
 name = "ctgan-tvae-experiment"
 version = "0.1.0"
-description = "CTGAN vs TVAE on Adult dataset — ML efficacy, privacy (DCR)"
+description = "CTGAN vs TVAE on Adult dataset"
 authors = [
     { name = "Oscar Nolen", email = "oscarnolen@gmail.com" }
 ]
@@ -18,7 +18,6 @@ dependencies = [
 ]
 
 [tool.uv]
-# Optional: specify resolution behavior or index if needed
 python-preference = "managed"
 
 [build-system]
