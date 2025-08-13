@@ -1,0 +1,94 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+
+\title{CTGAN \& TVAE on the Adult Dataset}
+\author{Oscar Nolen}
+\date{08/13/2025}
+
+\begin{document}
+\maketitle
+
+\section*{Task 2 - ML Efficacy with Synthetic Data}
+The models were trained on the real Adult training split, used to generate synthetic data, and then the paper's classifiers were trained on the synthetic data and tested on the real test split.
+
+\subsection*{My Results (Adult test set)}
+\begin{tabular}{l l r r}
+\toprule
+Source & Classifier & Accuracy & F1 \\
+\midrule
+CTGAN\_synth\_train & AdaBoost(n=50)             & 0.8277 & 0.5279 \\
+CTGAN\_synth\_train & DecisionTree(max\_depth=20) & 0.8128 & 0.5540 \\
+CTGAN\_synth\_train & LogisticRegression          & 0.8392 & 0.6048 \\
+CTGAN\_synth\_train & MLP(50)                     & 0.8243 & 0.5618 \\
+TVAE\_synth\_train  & AdaBoost(n=50)              & 0.8391 & 0.6477 \\
+TVAE\_synth\_train  & DecisionTree(max\_depth=20) & 0.7897 & 0.5634 \\
+TVAE\_synth\_train  & LogisticRegression          & 0.8341 & 0.6600 \\
+TVAE\_synth\_train  & MLP(50)                     & 0.8237 & 0.6104 \\
+\bottomrule
+\end{tabular}
+
+\vspace{10pt}
+\noindent \textbf{Averages:}
+\begin{itemize}
+    \item CTGAN: Accuracy $\approx$ 0.8260, F1 $\approx$ 0.5621
+    \item TVAE: Accuracy $\approx$ 0.8217, F1 $\approx$ 0.6204
+\end{itemize}
+
+\noindent \textbf{Paper context:} The CTGAN paper reports cross-dataset averages, not per-dataset numbers, so exact matches aren't expected. However, my results follow the paper's pattern: TVAE slightly outperforms CTGAN in F1 on this dataset.
+
+\section*{Task 3 - ML Efficacy with Real Data}
+The same classifiers were trained on the real Adult training split and evaluated on the real test split.
+
+\subsection*{My Results}
+\begin{tabular}{l r r}
+\toprule
+Classifier & Accuracy & F1 \\
+\midrule
+AdaBoost(n=50)              & 0.8512 & 0.6473 \\
+DecisionTree(max\_depth=20) & 0.8275 & 0.6377 \\
+LogisticRegression          & 0.8502 & 0.6647 \\
+MLP(50)                     & 0.8414 & 0.6560 \\
+\midrule
+\textbf{Average}            & 0.8426 & 0.6514 \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Paper (Table 5)}
+\begin{tabular}{l r r}
+\toprule
+Classifier & Accuracy & F1 \\
+\midrule
+AdaBoost(n=50)              & 0.8607 & 0.6803 \\
+DecisionTree(max\_depth=20) & 0.7984 & 0.6577 \\
+LogisticRegression          & 0.7953 & 0.6606 \\
+MLP(50)                     & 0.8506 & 0.6757 \\
+\bottomrule
+\end{tabular}
+
+\vspace{10pt}
+\noindent \textbf{Comparison:} My numbers are close but not identical. The differences likely come from split reproduction, preprocessing, and scikit-learn version defaults.
+
+\section*{Task 2 vs Task 3}
+Real-data training (Task 3) yields higher F1 scores ($\sim$0.65) than synthetic training (CTGAN $\approx$ 0.56, TVAE $\approx$ 0.62). This confirms that while synthetic data can be useful, it does not fully match the utility of real data for this task. TVAE narrows the gap more than CTGAN, consistent with the paper's qualitative conclusions.
+
+\section*{Task 4 - Privacy via DCR}
+Mean DCR was computed for the synthetic datasets from Task 2, and then for datasets of size $\times$2 and $\times$4.
+
+\begin{tabular}{l r r}
+\toprule
+Model & Size Multiple & Mean DCR \\
+\midrule
+CTGAN & 1 & 1.4584 \\
+CTGAN & 2 & 1.4597 \\
+CTGAN & 4 & 1.4597 \\
+TVAE  & 1 & 0.8281 \\
+TVAE  & 2 & 0.8345 \\
+TVAE  & 4 & 0.8371 \\
+\bottomrule
+\end{tabular}
+
+\vspace{10pt}
+\noindent \textbf{Trend:} DCR values are stable or slightly increasing with dataset size. CTGAN has higher DCR (suggesting greater distance from real records, potentially more privacy) but lower utility. TVAE has lower DCR (closer to real data, potentially less privacy) but higher ML efficacy. This aligns with the common privacy--utility trade-off.
+
+\end{document}
