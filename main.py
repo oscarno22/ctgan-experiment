@@ -239,8 +239,6 @@ def main():
     dcr_df = pd.DataFrame(dcr_results)
     dcr_df.to_csv(OUT_DIR / "dcr_results.csv", index=False)
 
-    print("experiment completed. check outputs/ for results.")
-
 
 if __name__ == "__main__":
     main()
